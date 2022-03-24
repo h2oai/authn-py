@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "h2o-authn"
+version = "0.0.0"
+description = ""
+authors = ["Luboš Pokorný <zoido@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+httpx = "^0.22.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+black = "^22.1.0"
+mypy = "^0.941"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
