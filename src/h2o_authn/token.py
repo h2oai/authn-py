@@ -1,3 +1,4 @@
+import collections
 import datetime
 from typing import Optional
 
@@ -5,23 +6,28 @@ DEFAULT_EXPIRY_THRESHOLD = datetime.timedelta(seconds=5)
 DEFAULT_EXPIRES_IN_FALLBACK = datetime.timedelta(seconds=30)
 
 
-class Token(str):
-    exp: datetime.datetime
-    scope: Optional[str]
+class Token(collections.UserString):
+    def __init__(
+        self, value: str, exp: datetime.datetime, scope: Optional[str]
+    ) -> None:
+        super().__init__(value)
+        self._exp = exp
+        self._scope = scope
 
-    def __new__(cls, value: str, exp: datetime.datetime, scope: Optional[str]):
-        token = str(value)
-        setattr(token, "exp", exp)
-        setattr(token, "scope", scope)
-        return token
+    @property
+    def exp(self):
+        return self._exp
+
+    @property
+    def scope(self):
+        return self._scope
 
 
 class Container:
     def __init__(
         self,
-        *,
         refresh_token: str,
-        scope: Optional[str] = None,
+        *,
         expiry_threshold: datetime.timedelta = DEFAULT_EXPIRY_THRESHOLD,
         expires_in_fallback: datetime.timedelta = DEFAULT_EXPIRES_IN_FALLBACK,
         minimal_expires_in: Optional[datetime.timedelta] = None,
@@ -33,7 +39,6 @@ class Container:
         self._expiry_threshold = expiry_threshold
         self._expires_in_fallback = expires_in_fallback
         self._minimal_expires_in = minimal_expires_in
-        self._scope = scope
 
         self._access_token: Optional[Token] = None
         self._access_token_exp: Optional[datetime.datetime] = None
@@ -41,6 +46,10 @@ class Container:
     @property
     def refresh_token(self) -> str:
         return self._refresh_token
+
+    @property
+    def original_refresh_token(self) -> str:
+        return self._original_access_token
 
     @property
     def access_token(self) -> Token:
@@ -58,9 +67,9 @@ class Container:
     def update_token(
         self,
         access_token: str,
-        expires_in: Optional[int],
-        refresh_token: Optional[str],
-        scope: Optional[str],
+        expires_in: Optional[int] = None,
+        refresh_token: Optional[str] = None,
+        scope: Optional[str] = None,
     ):
         exp_delta = self._expires_in_fallback
         if expires_in:
@@ -68,12 +77,11 @@ class Container:
 
         now = datetime.datetime.now(datetime.timezone.utc)
         exp = now + exp_delta
-        token_scope = scope or self._scope
 
         if refresh_token:
             self._refresh_token = refresh_token
 
-        self._access_token = Token(access_token, exp=exp, scope=token_scope)
+        self._access_token = Token(access_token, exp=exp, scope=scope)
         self._access_token_exp = exp
         if self._minimal_expires_in:
             self._access_token_exp = min(exp, now + self._minimal_expires_in)

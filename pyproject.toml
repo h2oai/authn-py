@@ -7,17 +7,25 @@ authors = ["H2O.ai <support@h2o.ai>"]
 description = "H2O Python clients authentication helpers"
 name = "h2o-authn"
 packages = [{include = "h2o_authn", from = "src"}]
-version = "0.1.0"
+version = "0.0.1"
 
 [tool.poetry.dependencies]
 httpx = "^0.22.0"
 python = "^3.7"
+
+# Test dependencies.
+pytest = {version = "^5.2", optional = true}
+time-machine = {version = "^2.6.0", optional = true}
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
 mypy = "^0.941"
 nox = "^2022.1.7"
 pytest = "^5.2"
+time-machine = "^2.6.0"
+
+[tool.poetry.extras]
+test = ["pytest", "time-machine"]
 
 [tool.flake8]
 application-import-names = ["h2o_authn"]
@@ -25,5 +33,7 @@ import_order_style = "appnexus"
 max-line-length = 88
 
 [tool.pytest.ini_options]
-minversion = "6.0"
 testpaths = ["tests"]
+
+[tool.black]
+skip-magic-trailing-comma = true

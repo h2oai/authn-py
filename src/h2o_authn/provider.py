@@ -19,12 +19,12 @@ class BaseTokenProvider:
         scope: Optional[str] = None,
         expiry_threshold: datetime.timedelta = datetime.timedelta(seconds=5),
         expires_in_fallback: datetime.timedelta = datetime.timedelta(seconds=30),
-        minimal_expires_in: Optional[datetime.timedelta] = None,
+        minimal_refresh_period: Optional[datetime.timedelta] = None,
     ) -> None:
         if not token_endpoint_url and not issuer_url:
             raise ValueError(
                 "'token_endpoint_url' and 'issuer_url' arguments are mutually exclusive."
-                " set only one.",
+                " set only one."
             )
         if token_endpoint_url and issuer_url:
             raise ValueError(
@@ -36,7 +36,7 @@ class BaseTokenProvider:
             refresh_token=refresh_token,
             expiry_threshold=expiry_threshold,
             expires_in_fallback=expires_in_fallback,
-            minimal_expires_in=minimal_expires_in,
+            minimal_expires_in=minimal_refresh_period,
             scope=scope,
         )
 
@@ -70,8 +70,7 @@ class BaseTokenProvider:
 
     def _fetch_token(self, client):
         return client.post(
-            self._token_endpoint_url,
-            data=self._create_refresh_request_data(),
+            self._token_endpoint_url, data=self._create_refresh_request_data()
         )
 
     def _update_token(self, resp: httpx.Response):
