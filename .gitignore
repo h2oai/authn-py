@@ -1,4 +1,8 @@
-dist
-.mypy_cache
+__pycache__/
+*.py[cod]
+*$py.class
 
+.nox
+.pytest_cache
 poetry.lock
+.mypy_cache
