@@ -76,7 +76,7 @@ def test_refresh_not_required_before_minimal_expires_in():
     container = token.Container(
         refresh_token="test-refresh-token",
         expiry_threshold=datetime.timedelta(seconds=0),
-        minimal_refresh_period=datetime.timedelta(seconds=1800),
+        minimal_expires_in=datetime.timedelta(seconds=1800),
     )
 
     # When
@@ -94,7 +94,7 @@ def test_refresh_required_after_minimal_expires_in():
     container = token.Container(
         refresh_token="test-refresh-token",
         expiry_threshold=datetime.timedelta(seconds=0),
-        minimal_refresh_period=datetime.timedelta(seconds=1800),
+        minimal_expires_in=datetime.timedelta(seconds=1800),
     )
 
     # When
