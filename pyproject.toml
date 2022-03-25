@@ -14,18 +14,26 @@ httpx = "^0.22.0"
 python = "^3.7"
 
 # Test dependencies.
-pytest = {version = "^5.2", optional = true}
+httpretty = {version = "^1.1.4", optional = true}
+pytest = [
+  {version = "^5.2", python = "<3.10", optional = true},
+  {version = "^7.1", python = ">=3.10", optional = true}, # lower version of python do not play right with Python 3.10
+]
 time-machine = {version = "^2.6.0", optional = true}
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
+httpretty = "^1.1.4"
 mypy = "^0.941"
 nox = "^2022.1.7"
-pytest = "^5.2"
+pytest = [
+  {version = "^5.2", python = "<3.10"},
+  {version = "^7.1", python = ">=3.10"}, # lower version of python do not play right with Python 3.10
+]
 time-machine = "^2.6.0"
 
 [tool.poetry.extras]
-test = ["pytest", "time-machine"]
+test = ["pytest", "time-machine", "httpretty"]
 
 [tool.flake8]
 application-import-names = ["h2o_authn"]

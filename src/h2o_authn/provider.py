@@ -31,18 +31,17 @@ class BaseTokenProvider:
                 "setting 'token_endpoint_url' or 'issuer_url' argument is required."
             )
 
-        self._scope = scope
         self._token_container = token.Container(
             refresh_token=refresh_token,
             expiry_threshold=expiry_threshold,
             expires_in_fallback=expires_in_fallback,
             minimal_expires_in=minimal_refresh_period,
-            scope=scope,
         )
 
         self._original_access_token = refresh_token
         self._client_id = client_id
         self._client_secret = client_secret
+        self._scope = scope
 
         if token_endpoint_url:
             self._token_endpoint_url = token_endpoint_url
@@ -114,11 +113,11 @@ class AsyncTokenProvider(BaseTokenProvider):
 
     async def _ensure_token_endpoint_url(self):
         if not self._token_endpoint_url:
-            with httpx.Client() as client:
+            async with httpx.AsyncClient() as client:
                 resp = await self._fetch_discovery(client)
             self._update_token_endpoint(resp)
 
     async def _do_refresh(self):
-        with httpx.Client() as client:
+        async with httpx.Client() as client:
             resp = await self._fetch_token(client)
         self._update_token(resp)
