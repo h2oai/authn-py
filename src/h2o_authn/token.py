@@ -7,11 +7,6 @@ DEFAULT_EXPIRES_IN_FALLBACK = datetime.timedelta(seconds=30)
 
 
 class Token(collections.UserString):
-    """Represents token returned by the providers.
-
-    Extends strings type and allows to check exp and scope of the token.
-    """
-
     def __init__(
         self, value: str, exp: datetime.datetime, scope: Optional[str]
     ) -> None:
@@ -29,11 +24,6 @@ class Token(collections.UserString):
 
 
 class Container:
-    """Manages data required for token updating.
-
-    Used by the providers to check how the token should be refreshed.
-    """
-
     def __init__(
         self,
         refresh_token: str,
