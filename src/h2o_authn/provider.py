@@ -118,6 +118,6 @@ class AsyncTokenProvider(BaseTokenProvider):
             self._update_token_endpoint(resp)
 
     async def _do_refresh(self):
-        async with httpx.Client() as client:
+        async with httpx.AsyncClient() as client:
             resp = await self._fetch_token(client)
         self._update_token(resp)
