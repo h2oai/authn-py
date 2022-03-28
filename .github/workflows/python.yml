@@ -7,6 +7,7 @@ on:
 
 jobs:
   test:
+    name: Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -30,6 +31,7 @@ jobs:
           nox -s tests -p ${{ matrix.python-version }} -- -v
 
   lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
