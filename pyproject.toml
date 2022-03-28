@@ -27,6 +27,7 @@ pytest = [
   {version = "^5.2", python = "<3.10"},
   {version = "^7.1", python = ">=3.10"}, # lower version of python do not play right with Python 3.10
 ]
+time-machine = "^2.6.0"
 
 [tool.flake8]
 application-import-names = ["h2o_authn"]
