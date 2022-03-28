@@ -28,7 +28,7 @@ pytest = [
   {version = "^5.2", python = "<3.10"},
   {version = "^7.1", python = ">=3.10"}, # lower version of python do not play right with Python 3.10
 ]
-pytest-asyncio = ">=0.16"
+pytest-asyncio = "^0.16"
 respx = "^0.19.2"
 time-machine = "^2.6.0"
 
