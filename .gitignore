@@ -1,5 +1,6 @@
 __pycache__/
 *.pyc
+dist/
 
 .nox
 .pytest_cache
