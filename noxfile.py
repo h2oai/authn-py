@@ -13,5 +13,5 @@ def lint(session):
     session.install("poetry")
     session.run("poetry", "install", "--no-root")
     session.run("black", "--check", ".")
-    session.run("mypy", ".")
+    session.run("mypy", "src")
     session.run("flake8", "src", "tests")

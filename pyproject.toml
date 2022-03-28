@@ -10,6 +10,7 @@ packages = [{include = "h2o_authn", from = "src"}]
 version = "0.0.0"
 
 [tool.poetry.dependencies]
+httpx = "^0.22.0"
 python = "^3.7"
 
 [tool.poetry.dev-dependencies]
@@ -19,7 +20,7 @@ flake8-bugbear = "^22.3.23"
 flake8-builtins = "^1.5.3"
 flake8-deprecated = "^1.3"
 flake8-eradicate = "^1.2.0"
-flake8-import-order = "^0.18.1"
+# flake8-import-order = "^0.18.1"
 flake8-mutable = "^1.2.0"
 mypy = "^0.942"
 nox = "^2022.1.7"
@@ -27,12 +28,9 @@ pytest = [
   {version = "^5.2", python = "<3.10"},
   {version = "^7.1", python = ">=3.10"}, # lower version of python do not play right with Python 3.10
 ]
+pytest-asyncio = "^0.16"
+respx = "^0.19.2"
 time-machine = "^2.6.0"
-
-[tool.flake8]
-application-import-names = ["h2o_authn"]
-import_order_style = "appnexus"
-max-line-length = 88
 
 [tool.black]
 skip-magic-trailing-comma = true
