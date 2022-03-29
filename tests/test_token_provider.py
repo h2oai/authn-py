@@ -1,4 +1,3 @@
-from copyreg import constructor
 import pytest
 
 import h2o_authn
