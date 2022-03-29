@@ -1,76 +1,32 @@
-import respx
-import time_machine
-import httpx
 import pytest
 
 import h2o_authn
 
 
-TEST_CLIENT_ID = "test-client-id"
-TOKEN_ENDPOINT_URL = "http://example.com/token"
-
-
-@respx.mock
-def test_provider():
-    # Given
-    route = respx.post(TOKEN_ENDPOINT_URL).mock(
-        return_value=httpx.Response(
-            status_code=200,
-            json={
-                "access_token": "new_access_token",
-                "refresh_token": "new_refresh_token",
-                "scope": "new scope",
-                "expires_in": 3600,
-            },
-        )
-    )
-    provider = h2o_authn.TokenProvider(
-        refresh_token="old_refresh_token",
-        client_id=TEST_CLIENT_ID,
-        token_endpoint_url=TOKEN_ENDPOINT_URL,
-    )
-
+@pytest.mark.parametrize(
+    "constructor", [h2o_authn.TokenProvider, h2o_authn.AsyncTokenProvider]
+)
+def test_token_provider_constructor_only_one_url_allowed(constructor):
     # When
-    with time_machine.travel(0, tick=False):
-        token = provider()
+    with pytest.raises(ValueError) as exc_info:
+        _ = constructor(
+            refresh_token="",
+            client_id="",
+            issuer_url="//issuer/url",
+            token_endpoint_url="//token/endpoint/url",
+        )
 
     # Then
-    assert route.called
-    assert token == "new_access_token"
-    assert token.scope == "new scope"
-    assert token.exp.timestamp() == 3600
+    assert "mutually exclusive" in str(exc_info.value)
 
 
-@pytest.mark.asyncio
-@respx.mock
-async def test_async_provider():
-    # Given
-    route = respx.post(TOKEN_ENDPOINT_URL).mock(
-        return_value=httpx.Response(
-            status_code=200,
-            json={
-                "access_token": "new_access_token",
-                "refresh_token": "new_refresh_token",
-                "scope": "new scope",
-                "expires_in": 3600,
-            },
-        )
-    )
-
-    provider = h2o_authn.AsyncTokenProvider(
-        refresh_token="old_refresh_token",
-        client_id=TEST_CLIENT_ID,
-        token_endpoint_url=TOKEN_ENDPOINT_URL,
-    )
-
+@pytest.mark.parametrize(
+    "constructor", [h2o_authn.TokenProvider, h2o_authn.AsyncTokenProvider]
+)
+def test_token_provider_constructor_atleast_one_url_required(constructor):
     # When
-    with time_machine.travel(0, tick=False):
-        token = await provider()
+    with pytest.raises(ValueError) as exc_info:
+        _ = constructor(refresh_token="", client_id="")
 
     # Then
-    assert route.called
-    assert token == "new_access_token"
-    assert token.scope == "new scope"
-    assert token.exp.timestamp() == 3600
-
-    assert token == "new_access_token"
+    assert "argument is required" in str(exc_info.value)

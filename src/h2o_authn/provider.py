@@ -1,3 +1,4 @@
+import abc
 import datetime
 from typing import Dict
 from typing import Optional
@@ -11,7 +12,7 @@ DEFAULT_EXPIRY_THRESHOLD = datetime.timedelta(seconds=5)
 DEFAULT_EXPIRES_IN_FALLBACK = datetime.timedelta(seconds=30)
 
 
-class BaseTokenProvider:
+class BaseTokenProvider(abc.ABC):
     def __init__(
         self,
         *,
@@ -25,12 +26,12 @@ class BaseTokenProvider:
         expires_in_fallback: datetime.timedelta = DEFAULT_EXPIRES_IN_FALLBACK,
         minimal_refresh_period: Optional[datetime.timedelta] = None,
     ) -> None:
-        if not token_endpoint_url and not issuer_url:
+        if token_endpoint_url and issuer_url:
             raise ValueError(
                 "'token_endpoint_url' and 'issuer_url' arguments are "
                 " mutually exclusive. set only one."
             )
-        if token_endpoint_url and issuer_url:
+        if not token_endpoint_url and not issuer_url:
             raise ValueError(
                 "setting 'token_endpoint_url' or 'issuer_url' argument is required."
             )
@@ -47,6 +48,7 @@ class BaseTokenProvider:
         self._client_secret = client_secret
         self._scope = scope
 
+        self._token_endpoint_url = None
         if token_endpoint_url:
             self._token_endpoint_url = token_endpoint_url
         if issuer_url:
