@@ -12,7 +12,7 @@ DEFAULT_EXPIRY_THRESHOLD = datetime.timedelta(seconds=5)
 DEFAULT_EXPIRES_IN_FALLBACK = datetime.timedelta(seconds=30)
 
 
-class BaseTokenProvider(abc.ABC):
+class _BaseTokenProvider(abc.ABC):
     def __init__(
         self,
         *,
@@ -26,6 +26,31 @@ class BaseTokenProvider(abc.ABC):
         expires_in_fallback: datetime.timedelta = DEFAULT_EXPIRES_IN_FALLBACK,
         minimal_refresh_period: Optional[datetime.timedelta] = None,
     ) -> None:
+        """Returns a new instance of the token provider.
+
+        Args:
+            refresh_token: Refresh token which will used for the access token exchange.
+            client_id: OAuth 2.0 client id that will be used or the access token
+                exchange.
+            issuer_url: Base URL of the issuer. This URL will be used for the discovery
+                to obtain token endpoint. Mutually exclusive with the
+                token_endpoint_url argument.
+            token_endpoint_url: URL of the token endpoint that should be used for the
+                access token exchange. Mutually exclusive with the issuer_url argument.
+            client_secret: Optional OAuth 2.0 client secret for the confidential
+                clients. Used only when provided.
+            scope: Optionally sets the the scope for which the access token should be
+                requested.
+            expiry_threshold: How long before token expiration should token be
+                refreshed when needed. This does not mean that the token will be
+                refreshed before it expires, only indicates the earliest moment before
+                the expiration when refresh would occur. (default: 5s)
+            expires_in_fallback: Fallback value for the expires_in value. Will be used
+                when token response does not contains expires_in field.
+            minimal_refresh_period: Optionally minimal period between the earliest token
+                refresh exchanges.
+        """
+
         if token_endpoint_url and issuer_url:
             raise ValueError(
                 "'token_endpoint_url' and 'issuer_url' arguments are "
@@ -91,7 +116,10 @@ class BaseTokenProvider(abc.ABC):
         self._token_endpoint_url = resp.json()["token_endpoint"]
 
 
-class TokenProvider(BaseTokenProvider):
+class TokenProvider(_BaseTokenProvider):
+    """Returns access token when called and makes sure that unexpired access token is
+    available."""
+
     def __call__(self) -> token.Token:
         self._ensure_token_endpoint_url()
         if self._token_container.refresh_required():
@@ -110,7 +138,10 @@ class TokenProvider(BaseTokenProvider):
         self._update_token(resp)
 
 
-class AsyncTokenProvider(BaseTokenProvider):
+class AsyncTokenProvider(_BaseTokenProvider):
+    """Returns access token when called and makes sure that unexpired access token is
+    available."""
+
     async def __call__(self) -> token.Token:
         await self._ensure_token_endpoint_url()
         if self._token_container.refresh_required():
