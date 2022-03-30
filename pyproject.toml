@@ -4,7 +4,7 @@ requires = ["poetry-core>=1.0.0"]
 
 [tool.poetry]
 authors = ["H2O.ai <support@h2o.ai>"]
-description = "H2O Python clients authentication helpers"
+description = "H2O Python Clients Authentication Helpers"
 name = "h2o-authn"
 packages = [{include = "h2o_authn", from = "src"}]
 version = "0.0.0"
