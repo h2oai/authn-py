@@ -1,4 +1,4 @@
 [flake8]
-application-import-names = ["h2o_authn"]
-import_order_style = "appnexus"
+application-package-names = ["h2o_authn"]
+import-order-style = "appnexus"
 max-line-length = 88
