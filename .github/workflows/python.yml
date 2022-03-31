@@ -43,7 +43,6 @@ jobs:
       - name: Install nox
         run: |
           python -m pip install --upgrade pip
-
           python -m pip install poetry==1.1.13
 
           poetry export --format=requirements.txt --dev --without-hashes \
@@ -87,7 +86,10 @@ jobs:
       - name: Install nox
         run: |
           python -m pip install --upgrade pip
-          pip install nox
+          python -m pip install poetry==1.1.13
+
+          poetry export --format=requirements.txt --dev --without-hashes \
+          | pip install --constraint=/dev/stdin nox nox-poetry
 
       - name: Run Linters
         run: |
