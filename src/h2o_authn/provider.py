@@ -73,6 +73,10 @@ class _BaseTokenProvider(abc.ABC):
         self._client_secret = client_secret
         self._scope = scope
 
+        self._expiry_threshold = expiry_threshold
+        self._expires_in_fallback = expires_in_fallback
+        self._minimal_refresh_period = minimal_refresh_period
+
         self._token_endpoint_url = None
         if token_endpoint_url:
             self._token_endpoint_url = token_endpoint_url
@@ -115,6 +119,23 @@ class _BaseTokenProvider(abc.ABC):
     def _update_token_endpoint(self, resp: httpx.Response):
         self._token_endpoint_url = resp.json()["token_endpoint"]
 
+    def _clone(self, constructor, scope: Optional[str] = None):
+        issuer_url = None
+        if not self._token_endpoint_url:
+            issuer_url = self._issuer_url
+
+        return constructor(
+            refresh_token=self._original_access_token,
+            client_id=self._client_id,
+            issuer_url=issuer_url,
+            token_endpoint_url=self._token_endpoint_url,
+            client_secret=self._client_secret,
+            scope=scope or self._scope,
+            expiry_threshold=self._expiry_threshold,
+            expires_in_fallback=self._expires_in_fallback,
+            minimal_refresh_period=self._minimal_refresh_period,
+        )
+
 
 class TokenProvider(_BaseTokenProvider):
     """Returns access token when called and makes sure that unexpired access token is
@@ -137,6 +158,18 @@ class TokenProvider(_BaseTokenProvider):
             resp = self._fetch_token(client)
         self._update_token(resp)
 
+    def as_async(self) -> "AsyncTokenProvider":
+        """Returns new instance of the asynchronous variant of the token provider
+        with the same configuration.
+        """
+        return self._clone(AsyncTokenProvider)
+
+    def with_scope(self, scope: str) -> "TokenProvider":
+        """Returns new instance the token provider for the differently scoped
+        access tokens with the same configuration.
+        """
+        return self._clone(TokenProvider, scope=scope)
+
 
 class AsyncTokenProvider(_BaseTokenProvider):
     """Returns access token when called and makes sure that unexpired access token is
@@ -158,3 +191,15 @@ class AsyncTokenProvider(_BaseTokenProvider):
         async with httpx.AsyncClient() as client:
             resp = await self._fetch_token(client)
         self._update_token(resp)
+
+    def as_sync(self) -> TokenProvider:
+        """Returns new instance of the synchronous variant of the token provider
+        with the same configuration.
+        """
+        return self._clone(TokenProvider)
+
+    def with_scope(self, scope: str) -> "AsyncTokenProvider":
+        """Returns new instance the token provider for the differently scoped
+        access tokens with the same configuration.
+        """
+        return self._clone(AsyncTokenProvider, scope=scope)
