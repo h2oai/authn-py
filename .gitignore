@@ -4,6 +4,7 @@ __pycache__/
 .nox
 .pytest_cache
 .mypy_cache
-poetry.lock
+/dist
+
 
 .vscode
