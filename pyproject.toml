@@ -4,9 +4,21 @@ requires = ["poetry-core>=1.0.0"]
 
 [tool.poetry]
 authors = ["H2O.ai <support@h2o.ai>"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Topic :: Internet",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Security",
+  "Topic :: Utilities",
+]
 description = "H2O Python Clients Authentication Helpers"
+license = "Apache-2.0"
 name = "h2o-authn"
 packages = [{include = "h2o_authn", from = "src"}]
+readme = "README.md"
+repository = "https://github.com/h2oai/authn-py"
 version = "0.0.0"
 
 [tool.poetry.dependencies]
