@@ -1,7 +1,6 @@
 import abc
 
 import respx
-import respx.patterns
 import time_machine
 import pytest
 
@@ -15,8 +14,6 @@ ISSUER_DISCOVERY_URL = "http://example.com/.well-known/openid-configuration"
 
 
 class AbstractTestCase(abc.ABC):
-    route: respx.Route
-
     @abc.abstractmethod
     def given(self):
         pass
