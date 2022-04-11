@@ -1,10 +1,12 @@
-import nox_poetry as nox
+import nox
+import nox_poetry
 
 
-@nox.session(python=["3.7", "3.8", "3.9", "3.10"])
-def tests(session):
-    session.install("pytest", "pytest-asyncio", "respx", "time-machine")
-    session.install(".")
+@nox_poetry.session(python=["3.7", "3.8", "3.9", "3.10"])
+@nox.parametrize("httpx", ["==0.16.*", "==0.21.*", "==0.22.*"])
+def tests(session, httpx):
+    session.install("pytest", "pytest-asyncio", "time-machine")
+    session.poetry.session.install(f"httpx{httpx}", "respx", ".")
     session.run("pytest", *session.posargs)
 
 
