@@ -6,6 +6,7 @@ from typing import Optional
 import httpx
 
 from h2o_authn import token
+from h2o_authn import error
 
 
 DEFAULT_EXPIRY_THRESHOLD = datetime.timedelta(seconds=5)
@@ -109,6 +110,18 @@ class _BaseTokenProvider(abc.ABC):
 
     def _update_token(self, resp: httpx.Response):
         resp_data = resp.json()
+
+        try:
+            resp.raise_for_status()
+        except httpx.HTTPStatusError:
+            if resp.status_code != 400 or not resp_data.get("error"):
+                raise
+            raise error.TokenEndpointError(
+                error=resp_data["error"],
+                error_description=resp_data.get("error_description"),
+                error_uri=resp_data.get("error_uri"),
+            )
+
         self._token_container.update_token(
             access_token=resp_data["access_token"],
             refresh_token=resp_data.get("refresh_token"),
@@ -117,6 +130,7 @@ class _BaseTokenProvider(abc.ABC):
         )
 
     def _update_token_endpoint(self, resp: httpx.Response):
+        resp.raise_for_status()
         self._token_endpoint_url = resp.json()["token_endpoint"]
 
     def _clone(self, constructor, scope: Optional[str] = None):

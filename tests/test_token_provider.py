@@ -2,6 +2,7 @@ import pytest
 import respx
 
 import h2o_authn
+import h2o_authn.error
 
 TEST_CLIENT_ID = "test-client-id"
 TEST_CLIENT_SECRET = "test-client-secret"
@@ -157,3 +158,62 @@ async def test_async_token_provider_with_scope():
 
     # Then
     assert route.called
+
+
+@respx.mock
+def test_sync_token_provider_error_wrapped():
+    # Given
+    route = respx.post(TOKEN_ENDPOINT_URL).respond(
+        400,
+        json={
+            "error": "test-error",
+            "error_description": "test error description",
+            "error_uri": "test error URI",
+        },
+    )
+
+    provider = h2o_authn.TokenProvider(
+        refresh_token="input_refresh_token",
+        client_id=TEST_CLIENT_ID,
+        token_endpoint_url=TOKEN_ENDPOINT_URL,
+    )
+
+    # When
+    with pytest.raises(h2o_authn.error.TokenEndpointError) as exc_info:
+        _ = provider()
+
+    # Then
+    assert route.called
+    assert exc_info.value.error == "test-error"
+    assert exc_info.value.error_description == "test error description"
+    assert exc_info.value.error_uri == "test error URI"
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_async_token_provider_error_wrapped():
+    # Given
+    route = respx.post(TOKEN_ENDPOINT_URL).respond(
+        400,
+        json={
+            "error": "test-error",
+            "error_description": "test error description",
+            "error_uri": "test error URI",
+        },
+    )
+
+    provider = h2o_authn.AsyncTokenProvider(
+        refresh_token="input_refresh_token",
+        client_id=TEST_CLIENT_ID,
+        token_endpoint_url=TOKEN_ENDPOINT_URL,
+    )
+
+    # When
+    with pytest.raises(h2o_authn.error.TokenEndpointError) as exc_info:
+        _ = await provider()
+
+    # Then
+    assert route.called
+    assert exc_info.value.error == "test-error"
+    assert exc_info.value.error_description == "test error description"
+    assert exc_info.value.error_uri == "test error URI"
