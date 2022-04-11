@@ -1,0 +1,11 @@
+[App]
+Name = "ai.h2o.authn-example"
+Version = "0.0.0"
+Title = "h2o-auth Example"
+Description = "Example App for h2o-authn"
+
+[Runtime]
+Module = "h2o_authn_example.app"
+EnableOIDC = true
+MemoryLimit = "1Gi"
+MemoryReservation = "500Mi"
