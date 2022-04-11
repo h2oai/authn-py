@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     name: Test
-    uses: ./.github/workflows/python-release.yml
+    uses: ./.github/workflows/python-test.yml
 
   build-n-publish:
     name: Build and publish Python distributions packages to PyPI
