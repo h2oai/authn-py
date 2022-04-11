@@ -1,11 +1,11 @@
 from typing import Optional
 
 
-class BaseException(Exception):
-    pass
+class BaseError(Exception):
+    """Base class for the exceptions raised by the package."""
 
 
-class TokenEndpointError(BaseException):
+class TokenEndpointError(BaseError):
     """Thrown when token providers catch well defined error sent back by server."""
 
     error: str
