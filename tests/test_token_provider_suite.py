@@ -29,7 +29,7 @@ class SyncTestCase:
 
     def when(self):
         with time_machine.travel(0, tick=False):
-            self.token = self.provider()
+            self.token = self.provider.token()
 
 
 class AsyncTestCase:
@@ -38,7 +38,7 @@ class AsyncTestCase:
 
     async def when(self):
         with time_machine.travel(0, tick=False):
-            self.token = await self.provider()
+            self.token = await self.provider.token()
 
 
 class ProviderTest(AbstractTestCase):

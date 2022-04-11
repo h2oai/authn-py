@@ -155,7 +155,10 @@ class TokenProvider(_BaseTokenProvider):
     """Returns access token when called and makes sure that unexpired access token is
     available."""
 
-    def __call__(self) -> token.Token:
+    def __call__(self) -> str:
+        return str(self.token())
+
+    def token(self) -> token.Token:
         self._ensure_token_endpoint_url()
         if self._token_container.refresh_required():
             self._do_refresh()
@@ -189,7 +192,10 @@ class AsyncTokenProvider(_BaseTokenProvider):
     """Returns access token when called and makes sure that unexpired access token is
     available."""
 
-    async def __call__(self) -> token.Token:
+    async def __call__(self) -> str:
+        return str(await self.token())
+
+    async def token(self) -> token.Token:
         await self._ensure_token_endpoint_url()
         if self._token_container.refresh_required():
             await self._do_refresh()
