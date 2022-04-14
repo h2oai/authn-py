@@ -40,7 +40,7 @@ jobs:
       - name: Set Release Version
         run: |
           poetry version "${GITHUB_REF#refs/*/}"
-          echo "__version __ = ${GITHUB_REF#refs/*/}" > ./src/h2o_authn/_version.py
+          echo "__version__ = \"${GITHUB_REF#refs/*/}\"" > ./src/h2o_authn/_version.py
 
       - name: Build a binary wheel and a source tarball
         run: |
