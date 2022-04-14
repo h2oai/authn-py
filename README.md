@@ -18,11 +18,12 @@ Package provides two top level classes `h2o_authn.TokenProvider` and `h2o_authn.
 - `refresh_token`: Refresh token which will used for the access token exchange.
 - `client_id`: OAuth 2.0 client id that will be used or the access token
     exchange.
-- `issuer_url`: Base URL of the issuer. This URL will be used for the discovery
-    to obtain token endpoint. Mutually exclusive with the
-    token_endpoint_url argument.
-- `token_endpoint_url`: URL of the token endpoint that should be used for the
-    access token exchange. Mutually exclusive with the issuer_url argument.
+- `issuer_url` or `token_endpoint_url` **needs to be provided**
+  - `issuer_url`: Base URL of the issuer. This URL will be used for the discovery
+        to obtain token endpoint. Mutually exclusive with the
+        token_endpoint_url argument.
+  - `token_endpoint_url`: URL of the token endpoint that should be used for the
+        access token exchange. Mutually exclusive with the issuer_url argument.
 - `client_secret`: Optional OAuth 2.0 client secret for the confidential
     clients. Used only when provided.
 - `scope`: Optionally sets the the scope for which the access token should be
