@@ -105,7 +105,7 @@ async def serve(q: Q):
         client_id=os.getenv("H2O_WAVE_OIDC_CLIENT_ID"),
         client_secret=os.getenv("H2O_WAVE_OIDC_CLIENT_SECRET"),
     )
-    my_home = await h2o_drive.MyHome(token=provider.as_async())
+    my_home = await h2o_drive.MyHome(token=provider)
 
     ...
 ```
