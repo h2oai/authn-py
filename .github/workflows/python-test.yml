@@ -47,4 +47,4 @@ jobs:
 
       - name: Run Tests in Python ${{ matrix.python-version }}
         run: |
-          nox -s tests -p ${{ matrix.python-version }} -- -v
+          nox -s tests -p ${{ steps.setup-python.outputs.python-version }} -- -v
