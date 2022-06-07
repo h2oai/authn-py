@@ -2,7 +2,7 @@ import nox
 import nox_poetry
 
 
-@nox_poetry.session(python=["3.7", "3.8", "3.9", "3.10"])
+@nox_poetry.session(python=["3.7", "3.8", "3.9", "3.10", "3.11-dev"])
 @nox.parametrize("httpx", ["==0.16.*", "==0.21.*", "==0.22.*"])
 def tests(session, httpx):
     session.install("pytest", "pytest-asyncio", "time-machine")
