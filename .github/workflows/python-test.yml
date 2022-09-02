@@ -49,4 +49,4 @@ jobs:
         env:
           PYTHON_VERSION: ${{ matrix.python-version }}
         run: |
-          nox -s tests -p ${PYTHON_VERSION:-*} -- -v
+          nox -s tests -p ${PYTHON_VERSION%-*} -- -v
