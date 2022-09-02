@@ -1,4 +1,3 @@
-import abc
 import datetime
 from typing import Dict
 from typing import Optional
@@ -13,7 +12,7 @@ DEFAULT_EXPIRY_THRESHOLD = datetime.timedelta(seconds=5)
 DEFAULT_EXPIRES_IN_FALLBACK = datetime.timedelta(seconds=30)
 
 
-class _BaseTokenProvider(abc.ABC):
+class _BaseTokenProvider:
     def __init__(
         self,
         *,
