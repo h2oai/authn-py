@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11-dev"]
 
     steps:
       - uses: actions/checkout@v2
@@ -46,5 +46,7 @@ jobs:
           | pip install --constraint=/dev/stdin nox nox-poetry
 
       - name: Run Tests in Python ${{ matrix.python-version }}
+        env:
+          PYTHON_VERSION: ${{ matrix.python-version }}
         run: |
-          nox -s tests -p ${{ matrix.python-version }} -- -v
+          nox -s tests -p ${PYTHON_VERSION%-*} -- -v
