@@ -34,7 +34,6 @@ class Container:
         expires_in_fallback: datetime.timedelta = DEFAULT_EXPIRES_IN_FALLBACK,
         minimal_expires_in: Optional[datetime.timedelta] = None,
     ) -> None:
-
         self._original_access_token = refresh_token
         self._refresh_token = refresh_token
         self._original_access_token = refresh_token
