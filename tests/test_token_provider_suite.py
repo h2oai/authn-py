@@ -1,11 +1,10 @@
 import abc
 
+import pytest
 import respx
 import time_machine
-import pytest
 
 import h2o_authn
-
 
 TEST_CLIENT_ID = "test-client-id"
 TOKEN_ENDPOINT_URL = "http://example.com/token"

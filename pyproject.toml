@@ -48,6 +48,7 @@ dependencies = [
   "pytest-asyncio==0.20.2",
   "pytest==7.2",
   "respx>=0.16",
+  "time-machine>=2.0.0",
 ]
 dev-mode = false
 
@@ -64,7 +65,7 @@ dependencies = [
 
 [tool.hatch.envs.lint.scripts]
 check = [
-  # "black --check .",
+  "black --check .",
   "ruff check .",
   "mypy src",
 ]
@@ -74,30 +75,13 @@ fix = [
   "check",
 ]
 
-[tool.hatch.envs.docs]
-dependencies = [
-  "pydoc-markdown==4.6.4",
-]
-
-[tool.hatch.envs.docs.scripts]
-generate = "pydoc-markdown"
-
 [tool.black]
 skip-magic-trailing-comma = true
 
 [tool.ruff]
-extend-select = [
-  "I", # isort
-  "B", # bugbear
-]
-
-line-length = 88  # Same as black.
-
+extend-select = ["I", "B", "A", "ERA"]
+line-length = 88 # Same as black.
 src = ["src", "test"]
-
-ignore = [
-  "E203",  # whitespace before ':' (black compatibility); see https://black.readthedocs.io/en/stable/faq.html#why-are-flake8-s-e203-and-w503-violated
-]
 
 [tool.ruff.isort]
 force-single-line = true
