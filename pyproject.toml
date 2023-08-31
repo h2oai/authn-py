@@ -1,9 +1,11 @@
 [build-system]
-build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core>=1.0.0"]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
 
-[tool.poetry]
-authors = ["H2O.ai <support@h2o.ai>"]
+[project]
+authors = [
+  {name = "H2O.ai", email = "support@h2o.ai"},
+]
 classifiers = [
   "Intended Audience :: Developers",
   "Operating System :: OS Independent",
@@ -12,33 +14,86 @@ classifiers = [
   "Topic :: Security",
   "Topic :: Utilities",
 ]
+dependencies = ["httpx>=0.16"]
 description = "H2O Python Clients Authentication Helpers"
 license = "Apache-2.0"
 name = "h2o-authn"
-packages = [{include = "h2o_authn", from = "src"}]
 readme = "README.md"
-repository = "https://github.com/h2oai/authn-py"
-version = "0.0.0"
+requires-python = ">=3.7"
+version = "1.0.0"
 
-[tool.poetry.dependencies]
-httpx = ">=0.16"
-python = "^3.7"
+[project.urls]
+Documentation = "https://github.com/h2oai/authn-py#readme"
+Issues = "https://github.com/h2oai/authn-py/issues"
+Source = "https://github.com/h2oai/authn-py"
 
-[tool.poetry.dev-dependencies]
-black = "^22.1.0"
-flake8 = "3.9.0"
-flake8-bugbear = "^22.3.23"
-flake8-builtins = "^1.5.3"
-flake8-deprecated = "^1.3"
-flake8-eradicate = "^1.2.0"
-flake8-mutable = "^1.2.0"
-mypy = "^1.4"
-nox = "^2022.1.7"
-nox-poetry = "^1.0.3"
-pytest = "^7.2"
-pytest-asyncio = "^0.21"
-respx = "^0.16"
-time-machine = "^2.10.0"
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests", "CHANGELOG.md"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/h2o_authn"]
+
+[[tool.hatch.envs.test.matrix]]
+httpx = ["httpx0.16", "httpx0.21", "httpx0.22", "httpx0.23"]
+python = ["3.7", "3.8", "3.9", "3.10", "3.11"]
+
+[tool.hatch.envs.test.overrides]
+matrix.httpx.dependencies = [
+  {value = "httpx==0.16.*", if = ["httpx0.16"]},
+  {value = "httpx==0.21.*", if = ["httpx0.21"]},
+  {value = "httpx==0.22.*", if = ["httpx0.22"]},
+  {value = "httpx==0.23.*", if = ["httpx0.23"]},
+]
+
+[tool.hatch.envs.test]
+dependencies = [
+  "pytest-asyncio~=0.21",
+  "pytest~=7.2",
+  "respx>=0.16",
+  "time-machine~=2.10",
+]
+dev-mode = false
+
+[tool.hatch.envs.test.scripts]
+pytest = "python -m pytest {args}"
+
+[tool.hatch.envs.devtest]
+template = "test"
+dev-mode = true
+
+[tool.hatch.envs.lint]
+dependencies = [
+  "black==22.10.0",
+  "mypy~=1.1",
+  "ruff==0.0.286",
+]
+
+[tool.hatch.envs.lint.scripts]
+check = [
+  "black --check .",
+  "ruff check .",
+  "mypy src",
+]
+fix = [
+  "ruff check --fix .",
+  "black .",
+  "check",
+]
 
 [tool.black]
 skip-magic-trailing-comma = true
+
+[tool.ruff]
+extend-select = ["I", "B", "A", "ERA"]
+line-length = 88 # Same as black.
+src = ["src", "test"]
+target-version = "py37"
+
+[tool.ruff.isort]
+case-sensitive = false
+force-single-line = true
+force-sort-within-sections = true
+known-first-party = ["h2o_authn"]
+order-by-type = false
+relative-imports-order = "closest-to-furthest"
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
