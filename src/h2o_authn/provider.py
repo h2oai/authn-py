@@ -4,9 +4,8 @@ from typing import Optional
 
 import httpx
 
-from h2o_authn import token
 from h2o_authn import error
-
+from h2o_authn import token
 
 DEFAULT_EXPIRY_THRESHOLD = datetime.timedelta(seconds=5)
 DEFAULT_EXPIRES_IN_FALLBACK = datetime.timedelta(seconds=30)
@@ -119,7 +118,7 @@ class _BaseTokenProvider:
                 error=resp_data["error"],
                 error_description=resp_data.get("error_description"),
                 error_uri=resp_data.get("error_uri"),
-            )
+            ) from None
 
         self._token_container.update_token(
             access_token=resp_data["access_token"],
