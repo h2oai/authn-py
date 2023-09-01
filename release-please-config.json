@@ -1,0 +1,20 @@
+{
+  "packages": {
+    ".": {
+      "changelog-path": "CHANGELOG.md",
+      "release-type": "python",
+      "draft-pull-request": true,
+      "extra-files": [
+        "src/h2o_authn/_version.py"
+      ]
+    }
+  },
+  "pull-request-title-pattern": "chore: 🔖 release${component} ${version}",
+  "bootstrap-sha": "b0afa2fe4808f2f417746008c67d7d823c9ec239",
+  "separate-pull-requests": true,
+  "draft-pull-request": true,
+  "plugins": [
+    "sentence-case"
+  ],
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
+}
