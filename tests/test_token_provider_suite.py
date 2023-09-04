@@ -245,8 +245,9 @@ class ProviderFromDiscoveryWithServiceScope(AbstractTestCase):
             },
         ).respond(json={"access_token": "new_access_token"})
 
-        self.provider = self.create_provider_from_discovery(discovery=TEST_DISCOVERY,
-                                                            service="test-service")
+        self.provider = self.create_provider_from_discovery(
+            discovery=TEST_DISCOVERY, service="test-service"
+        )
 
     def then(self):
         assert self.issuer_discovery_route.called
@@ -269,12 +270,14 @@ class ProviderFromDiscoveryWithExplicitScope(AbstractTestCase):
             },
         ).respond(json={"access_token": "new_access_token"})
 
-        self.provider = self.create_provider_from_discovery(discovery=TEST_DISCOVERY,
-                                                            scope="explicit scope")
+        self.provider = self.create_provider_from_discovery(
+            discovery=TEST_DISCOVERY, scope="explicit scope"
+        )
 
     def then(self):
         assert self.issuer_discovery_route.called
         assert self.token_route.called
+
 
 def _all_subclasses(cls):
     return set(cls.__subclasses__()).union(
