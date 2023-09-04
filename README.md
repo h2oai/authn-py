@@ -126,3 +126,53 @@ client = h2osteam.clients.DriverlessClient()
 
 ...
 ```
+
+### H2O Cloud Discovery support
+
+I you use token providers to access H2O.ai services running on H2O Cloud, you
+can simplify the configuration by using `h2o-authn[discovery]` extra.
+
+For more info regarding H2O Cloud Discovery, please see
+[H2O Cloud Discovery Client](https://github.com/h2oai/cloud-discovery-py)
+
+```sh
+pip install h2o-authn[discovery]
+```
+
+Module `h2o_authn.discovery` provides `new` and `new_async` functions which
+accepts following arguments:
+
+- `discovery`: The Discovery object to use for configuration.
+- `client`: The name of the client to use for configuration.
+    Defaults to "platform".
+- `service`: The name of the service to use for configuration to use for scope
+    inference. Scope is used in the token requests. Ignored if scope is set.
+- `scope`: The scope to use for the token requests.
+- `expiry_threshold`: How long before token expiration should token be
+    refreshed when needed. This does not mean that the token will be
+    refreshed before it expires, only indicates the earliest moment before
+    the expiration when refresh would occur. (default: 5s)
+- `expires_in_fallback`: Fallback value for the expires_in value. Will be used
+    when token response does not contains expires_in field.
+- `minimal_refresh_period`: Optionally minimal period between the earliest token
+    refresh exchanges.
+
+#### Example: Use of the H2O Cloud Discovery with H2O.ai MLOps Python CLient
+
+```python
+
+import h2o_authn.discovery
+import h2o_discovery
+import h2o_mlops_client as mlops
+
+
+discovery = h2o_discovery.discover()
+
+provider = h2o_authn.discovery.new(discovery, service="mlops")
+
+mlops_client = mlops.Client(
+    gateway_url=discovery.services["mlops"].uri,
+    token_provider=provider,
+)
+...
+```
