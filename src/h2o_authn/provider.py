@@ -1,6 +1,8 @@
 import datetime
+import ssl
 from typing import Dict
 from typing import Optional
+from typing import Union
 
 import httpx
 
@@ -9,6 +11,8 @@ from h2o_authn import token
 
 DEFAULT_EXPIRY_THRESHOLD = datetime.timedelta(seconds=5)
 DEFAULT_EXPIRES_IN_FALLBACK = datetime.timedelta(seconds=30)
+
+DEFAULT_HTTP_TIMEOUT = datetime.timedelta(seconds=5)
 
 
 class _BaseTokenProvider:
@@ -23,7 +27,9 @@ class _BaseTokenProvider:
         scope: Optional[str] = None,
         expiry_threshold: datetime.timedelta = DEFAULT_EXPIRY_THRESHOLD,
         expires_in_fallback: datetime.timedelta = DEFAULT_EXPIRES_IN_FALLBACK,
+        http_timeout: datetime.timedelta = DEFAULT_HTTP_TIMEOUT,
         minimal_refresh_period: Optional[datetime.timedelta] = None,
+        http_ssl_context: Optional[ssl.SSLContext] = None,
     ) -> None:
         """Returns a new instance of the token provider.
 
@@ -48,6 +54,10 @@ class _BaseTokenProvider:
                 when token response does not contains expires_in field.
             minimal_refresh_period: Optionally minimal period between the earliest token
                 refresh exchanges.
+            http_timeout: The timeout for HTTP requests. Value applies to all of the
+                timeouts (connect, read, write).
+            http_ssl_context: The SSL context to use for HTTPS requests.
+                If not specified default SSL context is used.
         """
 
         if token_endpoint_url and issuer_url:
@@ -81,6 +91,11 @@ class _BaseTokenProvider:
             self._token_endpoint_url = token_endpoint_url
         if issuer_url:
             self._issuer_url = issuer_url
+
+        self._http_timeout = http_timeout.total_seconds()
+        self._verify: Union[ssl.SSLContext, bool] = True
+        if http_ssl_context is not None:
+            self._verify = http_ssl_context
 
     def _create_refresh_request_data(self) -> Dict[str, str]:
         data = {
@@ -164,14 +179,17 @@ class TokenProvider(_BaseTokenProvider):
 
     def _ensure_token_endpoint_url(self):
         if not self._token_endpoint_url:
-            with httpx.Client() as client:
+            with self._client() as client:
                 resp = self._fetch_discovery(client)
             self._update_token_endpoint(resp)
 
     def _do_refresh(self):
-        with httpx.Client() as client:
+        with self._client() as client:
             resp = self._fetch_token(client)
         self._update_token(resp)
+
+    def _client(self) -> httpx.Client:
+        return httpx.Client(timeout=self._http_timeout, verify=self._verify)
 
     def as_async(self) -> "AsyncTokenProvider":
         """Returns new instance of the asynchronous variant of the token provider
@@ -201,14 +219,17 @@ class AsyncTokenProvider(_BaseTokenProvider):
 
     async def _ensure_token_endpoint_url(self):
         if not self._token_endpoint_url:
-            async with httpx.AsyncClient() as client:
+            async with self._client() as client:
                 resp = await self._fetch_discovery(client)
             self._update_token_endpoint(resp)
 
     async def _do_refresh(self):
-        async with httpx.AsyncClient() as client:
+        async with self._client() as client:
             resp = await self._fetch_token(client)
         self._update_token(resp)
+
+    def _client(self) -> httpx.AsyncClient:
+        return httpx.AsyncClient(timeout=self._http_timeout, verify=self._verify)
 
     def as_sync(self) -> TokenProvider:
         """Returns new instance of the synchronous variant of the token provider
