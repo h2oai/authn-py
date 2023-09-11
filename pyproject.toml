@@ -25,7 +25,7 @@ httpx = ">=0.16"
 python = "^3.7"
 
 [tool.poetry.dev-dependencies]
-black = "^22.1.0"
+black = "^23.3.0"
 flake8 = "3.9.0"
 flake8-bugbear = "^22.3.23"
 flake8-builtins = "^1.5.3"
