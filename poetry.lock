@@ -641,17 +641,17 @@ six = ">=1.5"
 
 [[package]]
 name = "respx"
-version = "0.16.3"
+version = "0.20.2"
 description = "A utility for mocking out the Python HTTPX and HTTP Core libraries."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "respx-0.16.3-py2.py3-none-any.whl", hash = "sha256:2db35e4af6bf25f58435457da7a0df52b34b8b3c2ea584d8a8cce27a7b00a614"},
-    {file = "respx-0.16.3.tar.gz", hash = "sha256:3f4781a7fc02d6162f63f33c1481b31d83c0b8c54e98a077932a4197182a7312"},
+    {file = "respx-0.20.2-py2.py3-none-any.whl", hash = "sha256:ab8e1cf6da28a5b2dd883ea617f8130f77f676736e6e9e4a25817ad116a172c9"},
+    {file = "respx-0.20.2.tar.gz", hash = "sha256:07cf4108b1c88b82010f67d3c831dae33a375c7b436e54d87737c7f9f99be643"},
 ]
 
 [package.dependencies]
-httpx = ">=0.15"
+httpx = ">=0.21.0"
 
 [[package]]
 name = "six"
@@ -846,4 +846,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "670bc7d80befacab5b8df52ab710ea8d27b57573ee251a0db08b437997ce7dee"
+content-hash = "6c4498ab298e27b711b0249caf0bc7ba9898ec7b9512d57177338894645c1842"
