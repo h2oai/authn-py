@@ -129,8 +129,8 @@ client = h2osteam.clients.DriverlessClient()
 
 ### H2O Cloud Discovery support
 
-I you use token providers to access H2O.ai services running on H2O Cloud, you
-can simplify the configuration by using `h2o-authn[discovery]` extra.
+I you use the token provider to access H2O.ai services running in your  H2O AI Cloud environment, you
+can simply the configuration by using `h2o-authn[discovery]` extension.
 
 For more info regarding H2O Cloud Discovery, please see
 [H2O Cloud Discovery Client](https://github.com/h2oai/cloud-discovery-py)
