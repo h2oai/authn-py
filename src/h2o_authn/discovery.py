@@ -12,7 +12,6 @@ def create(
     discovery: h2o_discovery.Discovery,
     client: str = DEFAULT_CLIENT,
     *,
-    service: Optional[str] = None,
     scope: Optional[str] = None,
     client_secret: Optional[str] = None,
     expiry_threshold: datetime.timedelta = provider.DEFAULT_EXPIRY_THRESHOLD,
@@ -27,8 +26,6 @@ def create(
         discovery: The Discovery object to use for configuration.
         client: The name of the client to use for configuration.
             Defaults to "platform".
-        service: The name of the service to use for configuration to use for scope
-            inference. Scope is used in the token requests. Ignored if scope is set.
         scope: The scope to use for the token requests.
         expiry_threshold: How long before token expiration should token be
             refreshed when needed. This does not mean that the token will be
@@ -43,9 +40,6 @@ def create(
     client_id = discovery.clients[client].oauth2_client_id
     issuer_url = discovery.environment.issuer_url
     refresh_token = discovery.credentials[client].refresh_token
-
-    if not scope and service:
-        scope = discovery.services[service].oauth2_scope
 
     return provider.TokenProvider(
         refresh_token=refresh_token,
@@ -63,7 +57,6 @@ def create_async(
     discovery: h2o_discovery.Discovery,
     client: str = DEFAULT_CLIENT,
     *,
-    service: Optional[str] = None,
     scope: Optional[str] = None,
     client_secret: Optional[str] = None,
     expiry_threshold: datetime.timedelta = provider.DEFAULT_EXPIRY_THRESHOLD,
@@ -79,8 +72,6 @@ def create_async(
         discovery: The Discovery object to use for configuration.
         client: The name of the client to use for configuration.
             Defaults to "platform".
-        service: The name of the service to use for configuration to use for scope
-            inference. Scope is used in the token requests. Ignored if scope is set.
         scope: The scope to use for the token requests.
         expiry_threshold: How long before token expiration should token be
             refreshed when needed. This does not mean that the token will be
@@ -96,16 +87,12 @@ def create_async(
     issuer_url = discovery.environment.issuer_url
     refresh_token = discovery.credentials[client].refresh_token
 
-    set_scope = scope
-    if not set_scope and service:
-        set_scope = discovery.services[service].oauth2_scope
-
     return provider.AsyncTokenProvider(
         refresh_token=refresh_token,
         client_id=client_id,
         issuer_url=issuer_url,
         client_secret=client_secret,
-        scope=set_scope,
+        scope=scope,
         expiry_threshold=expiry_threshold,
         expires_in_fallback=expires_in_fallback,
         minimal_refresh_period=minimal_refresh_period,

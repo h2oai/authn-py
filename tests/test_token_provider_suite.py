@@ -229,32 +229,7 @@ class ProviderFromDiscoveryWithExplicitClient(AbstractTestCase):
         assert self.token_route.called
 
 
-class ProviderFromDiscoveryWithServiceScope(AbstractTestCase):
-    def given(self):
-        self.issuer_discovery_route = respx.get(ISSUER_DISCOVERY_URL).respond(
-            json={"token_endpoint": TOKEN_ENDPOINT_URL}
-        )
-
-        self.token_route = respx.post(
-            TOKEN_ENDPOINT_URL,
-            data={
-                "grant_type": "refresh_token",
-                "client_id": PLATFORM_CLIENT_ID,
-                "refresh_token": PLATFORM_CLIENT_REFRESH_TOKEN,
-                "scope": "test service scopes",
-            },
-        ).respond(json={"access_token": "new_access_token"})
-
-        self.provider = self.create_provider_from_discovery(
-            discovery=TEST_DISCOVERY, service="test-service"
-        )
-
-    def then(self):
-        assert self.issuer_discovery_route.called
-        assert self.token_route.called
-
-
-class ProviderFromDiscoveryWithExplicitScope(AbstractTestCase):
+class ProviderFromDiscoveryWithScope(AbstractTestCase):
     def given(self):
         self.issuer_discovery_route = respx.get(ISSUER_DISCOVERY_URL).respond(
             json={"token_endpoint": TOKEN_ENDPOINT_URL}
