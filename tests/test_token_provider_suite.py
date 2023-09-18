@@ -77,7 +77,7 @@ class SyncTestCase:
 
     @staticmethod
     def create_provider_from_discovery(*args, **kwargs):
-        return h2o_authn.discovery.new(*args, **kwargs)
+        return h2o_authn.discovery.create(*args, **kwargs)
 
     def when(self):
         with time_machine.travel(0, tick=False):
@@ -93,7 +93,7 @@ class AsyncTestCase:
 
     @staticmethod
     def create_provider_from_discovery(*args, **kwargs):
-        return h2o_authn.discovery.new_async(*args, **kwargs)
+        return h2o_authn.discovery.create_async(*args, **kwargs)
 
     async def when(self):
         with time_machine.travel(0, tick=False):

@@ -8,7 +8,7 @@ from h2o_authn import provider
 DEFAULT_CLIENT = "platform"
 
 
-def new(
+def create(
     discovery: h2o_discovery.Discovery,
     client: str = DEFAULT_CLIENT,
     *,
@@ -59,7 +59,7 @@ def new(
     )
 
 
-def new_async(
+def create_async(
     discovery: h2o_discovery.Discovery,
     client: str = DEFAULT_CLIENT,
     *,
