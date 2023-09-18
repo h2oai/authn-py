@@ -145,8 +145,6 @@ accepts following arguments:
 - `discovery`: The Discovery object to use for configuration.
 - `client`: The name of the client to use for configuration.
     Defaults to "platform".
-- `service`: The name of the service to use for configuration to use for scope
-    inference. Scope is used in the token requests. Ignored if scope is set.
 - `scope`: The scope to use for the token requests.
 - `expiry_threshold`: How long before token expiration should token be
     refreshed when needed. This does not mean that the token will be
