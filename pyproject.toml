@@ -27,11 +27,11 @@ Documentation = "https://github.com/h2oai/authn-py#readme"
 Issues = "https://github.com/h2oai/authn-py/issues"
 Source = "https://github.com/h2oai/authn-py"
 
-[tool.hatch.build.targets.sdist]
-include = ["/src", "/tests", "CHANGELOG.md"]
-
 [tool.hatch.build.targets.wheel]
 packages = ["src/h2o_authn"]
+
+[project.optional-dependencies]
+discovery = ["h2o-cloud-discovery~=1.1"]
 
 [[tool.hatch.envs.test.matrix]]
 httpx = ["httpx0.16", "httpx0.21", "httpx0.22", "httpx0.23"]
@@ -53,13 +53,14 @@ dependencies = [
   "time-machine~=2.10",
 ]
 dev-mode = false
+features = ["discovery"]
 
 [tool.hatch.envs.test.scripts]
 pytest = "python -m pytest {args}"
 
 [tool.hatch.envs.devtest]
-template = "test"
 dev-mode = true
+template = "test"
 
 [tool.hatch.envs.lint]
 dependencies = [
@@ -67,6 +68,7 @@ dependencies = [
   "mypy~=1.1",
   "ruff==0.0.286",
 ]
+features = ["discovery"]
 
 [tool.hatch.envs.lint.scripts]
 check = [
