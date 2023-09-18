@@ -246,7 +246,8 @@ class ProviderFromDiscoveryWithServiceScope(AbstractTestCase):
         ).respond(json={"access_token": "new_access_token"})
 
         self.provider = self.create_provider_from_discovery(
-            discovery=TEST_DISCOVERY, service="test-service"
+            discovery=TEST_DISCOVERY,
+            scope=h2o_authn.discovery.ScopeForService("test-service"),
         )
 
     def then(self):
