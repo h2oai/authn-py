@@ -44,16 +44,15 @@ def new(
     issuer_url = discovery.environment.issuer_url
     refresh_token = discovery.credentials[client].refresh_token
 
-    set_scope = scope
-    if not set_scope and service:
-        set_scope = discovery.services[service].oauth2_scope
+    if not scope and service:
+        scope = discovery.services[service].oauth2_scope
 
     return provider.TokenProvider(
         refresh_token=refresh_token,
         client_id=client_id,
         issuer_url=issuer_url,
         client_secret=client_secret,
-        scope=set_scope,
+        scope=scope,
         expiry_threshold=expiry_threshold,
         expires_in_fallback=expires_in_fallback,
         minimal_refresh_period=minimal_refresh_period,
