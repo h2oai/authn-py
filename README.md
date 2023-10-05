@@ -166,7 +166,7 @@ import h2o_mlops_client as mlops
 
 discovery = h2o_discovery.discover()
 
-provider = h2o_authn.discovery.create(discovery, service="mlops-api")
+provider = h2o_authn.discovery.create(discovery)
 
 mlops_client = mlops.Client(
     gateway_url=discovery.services["mlops-api"].uri,
