@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/h2oai/authn-py/compare/v1.1.0...v1.1.1) (2023-12-05)
+
+
+### Documentation
+
+* 📝 Fix discovery example in the README ([#69](https://github.com/h2oai/authn-py/issues/69)) ([7657e6e](https://github.com/h2oai/authn-py/commit/7657e6ed7540113ca6310cb765af285a4944c82a))
+* 📝 remove dropped `service` parameter from the discovery example in README ([#71](https://github.com/h2oai/authn-py/issues/71)) ([3e02562](https://github.com/h2oai/authn-py/commit/3e02562c6b5413af8519509c8901f6c7829ea119))
+
 ## [1.1.0](https://github.com/h2oai/authn-py/compare/v1.0.0...v1.1.0) (2023-09-18)
 
 
