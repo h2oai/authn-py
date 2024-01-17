@@ -27,6 +27,6 @@ jobs:
     uses: ./.github/workflows/pypi-release.yml
 
     needs: release-please
-    if: needs.release-please.outputs.releases_created
+    if: needs.release-please.outputs.releases_created == 'true'
 
     secrets: inherit
