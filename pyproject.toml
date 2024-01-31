@@ -19,7 +19,7 @@ description = "H2O Python Clients Authentication Helpers"
 license = "Apache-2.0"
 name = "h2o-authn"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 version = "1.1.1"
 
 [project.urls]
@@ -35,7 +35,7 @@ discovery = ["h2o-cloud-discovery~=1.1"]
 
 [[tool.hatch.envs.test.matrix]]
 httpx = ["httpx0.16", "httpx0.21", "httpx0.22", "httpx0.23"]
-python = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
 [tool.hatch.envs.test.overrides]
 matrix.httpx.dependencies = [
