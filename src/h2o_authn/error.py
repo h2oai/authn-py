@@ -28,6 +28,14 @@ class TokenEndpointError(BaseError):
         if self.error_description:
             parts.append(f", error_description={self.error_description!r}")
         if self.error_uri:
-            parts.append(f", error_description={self.error_uri!r}")
+            parts.append(f", error_uri={self.error_uri!r}")
         parts.append(")")
+        return "".join(parts)
+
+    def __str__(self) -> str:
+        parts = [self.error]
+        if self.error_description:
+            parts.append(f": {self.error_description}")
+        if self.error_uri:
+            parts.append(f" ({self.error_uri})")
         return "".join(parts)
