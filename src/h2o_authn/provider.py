@@ -77,7 +77,7 @@ class _BaseTokenProvider:
             minimal_expires_in=minimal_refresh_period,
         )
 
-        self._original_access_token = refresh_token
+        self._original_refresh_token = refresh_token
         self._client_id = client_id
         self._client_secret = client_secret
         self._scope = scope
@@ -152,7 +152,7 @@ class _BaseTokenProvider:
             issuer_url = self._issuer_url
 
         return constructor(
-            refresh_token=self._original_access_token,
+            refresh_token=self._original_refresh_token,
             client_id=self._client_id,
             issuer_url=issuer_url,
             token_endpoint_url=self._token_endpoint_url,
