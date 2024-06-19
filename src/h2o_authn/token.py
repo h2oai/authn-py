@@ -34,9 +34,8 @@ class Container:
         expires_in_fallback: datetime.timedelta = DEFAULT_EXPIRES_IN_FALLBACK,
         minimal_expires_in: Optional[datetime.timedelta] = None,
     ) -> None:
-        self._original_access_token = refresh_token
+        self._original_refresh_token = refresh_token
         self._refresh_token = refresh_token
-        self._original_access_token = refresh_token
         self._expiry_threshold = expiry_threshold
         self._expires_in_fallback = expires_in_fallback
         self._minimal_expires_in = minimal_expires_in
@@ -52,7 +51,7 @@ class Container:
     @property
     def original_refresh_token(self) -> str:
         """Original refresh token passed during the initialization."""
-        return self._original_access_token
+        return self._original_refresh_token
 
     @property
     def access_token(self) -> Token:
