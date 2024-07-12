@@ -31,4 +31,5 @@ jobs:
     needs: release-please
     if: needs.release-please.outputs.releases_created == 'true'
 
-    secrets: inherit
+    permissions:
+      id-token: write
