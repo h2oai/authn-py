@@ -20,7 +20,7 @@ license = "Apache-2.0"
 name = "h2o-authn"
 readme = "README.md"
 requires-python = ">=3.8"
-version = "2.0.1"
+version = "3.0.0"
 
 [project.urls]
 Documentation = "https://github.com/h2oai/authn-py#readme"
