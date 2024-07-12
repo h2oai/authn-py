@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/h2oai/authn-py/compare/v2.0.0...v2.0.1) (2024-07-12)
+
+
+### Bug Fixes
+
+* :arrow_up: update h2o-cloud-discovery requirement ([#84](https://github.com/h2oai/authn-py/issues/84)) ([2506159](https://github.com/h2oai/authn-py/commit/250615916f00df44c147920774e65577fdeaf0f2))
+
 ## [2.0.0](https://github.com/h2oai/authn-py/compare/v1.1.1...v2.0.0) (2024-02-05)
 
 
