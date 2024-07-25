@@ -2,7 +2,6 @@ import datetime
 import ssl
 from typing import Dict
 from typing import Optional
-from typing import Union
 
 import httpx
 
@@ -93,9 +92,7 @@ class _BaseTokenProvider:
             self._issuer_url = issuer_url
 
         self._http_timeout = http_timeout.total_seconds()
-        self._verify: Union[ssl.SSLContext, bool] = True
-        if http_ssl_context is not None:
-            self._verify = http_ssl_context
+        self._verify = http_ssl_context or ssl.create_default_context()
 
     def _create_refresh_request_data(self) -> Dict[str, str]:
         data = {
