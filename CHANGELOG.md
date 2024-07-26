@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/h2oai/authn-py/compare/v2.0.1...v2.1.0) (2024-07-25)
+
+
+### Features
+
+* Use default ssl context by default ([#96](https://github.com/h2oai/authn-py/issues/96)) ([91cfa86](https://github.com/h2oai/authn-py/commit/91cfa86c701b5fa2fc8555919ba8543b9f0fa184))
+
 ## [2.0.1](https://github.com/h2oai/authn-py/compare/v2.0.0...v2.0.1) (2024-07-12)
 
 
