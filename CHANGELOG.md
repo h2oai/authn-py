@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/h2oai/authn-py/compare/v2.1.0...v2.1.1) (2024-09-19)
+
+
+### Documentation
+
+* 🩹 Fix licencse badge link. ([#99](https://github.com/h2oai/authn-py/issues/99)) ([b61a0de](https://github.com/h2oai/authn-py/commit/b61a0deacf3a5c4ceb2ce6b903a4d124626ace4b)), closes [#98](https://github.com/h2oai/authn-py/issues/98)
+
 ## [2.1.0](https://github.com/h2oai/authn-py/compare/v2.0.1...v2.1.0) (2024-07-25)
 
 
