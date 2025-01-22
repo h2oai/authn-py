@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.0.0](https://github.com/h2oai/authn-py/compare/v2.1.0...v3.0.0) (2025-01-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* ➖ Drop official support for Python 3.8 ([#103](https://github.com/h2oai/authn-py/issues/103))
+* ➖ require httpx >= 0.23 ([#101](https://github.com/h2oai/authn-py/issues/101))
+
+### Documentation
+
+* 🩹 Fix licencse badge link. ([#99](https://github.com/h2oai/authn-py/issues/99)) ([b61a0de](https://github.com/h2oai/authn-py/commit/b61a0deacf3a5c4ceb2ce6b903a4d124626ace4b)), closes [#98](https://github.com/h2oai/authn-py/issues/98)
+
+
+### Build System
+
+* ➖ Drop official support for Python 3.8 ([#103](https://github.com/h2oai/authn-py/issues/103)) ([4c1cc9b](https://github.com/h2oai/authn-py/commit/4c1cc9bdbe33847418dbe8e3b71c6142e0f28f93))
+* ➖ require httpx &gt;= 0.23 ([#101](https://github.com/h2oai/authn-py/issues/101)) ([1164ed5](https://github.com/h2oai/authn-py/commit/1164ed5669512328ec8829483a9f98df65e7ce96))
+
 ## [2.1.0](https://github.com/h2oai/authn-py/compare/v2.0.1...v2.1.0) (2024-07-25)
 
 
