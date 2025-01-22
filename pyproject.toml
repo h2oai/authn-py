@@ -35,7 +35,7 @@ discovery = ["h2o-cloud-discovery>=1.1,<4.0"]
 
 [[tool.hatch.envs.test.matrix]]
 httpx = ["httpx0.23", "httpx0.24", "httpx0.25", "httpx0.26", "httpx0.27", "httpx0.28"]
-python = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
 [tool.hatch.envs.test.overrides]
 matrix.httpx.dependencies = [
@@ -44,7 +44,7 @@ matrix.httpx.dependencies = [
   {value = "httpx==0.25.*", if = ["httpx0.25"]},
   {value = "httpx==0.26.*", if = ["httpx0.26"]},
   {value = "httpx==0.27.*", if = ["httpx0.27"]},
-  {value = "httpx==0.27.*", if = ["httpx0.28"]},
+  {value = "httpx==0.28.*", if = ["httpx0.28"]},
 ]
 
 [tool.hatch.envs.test]
