@@ -44,7 +44,7 @@ matrix.httpx.dependencies = [
   {value = "httpx==0.25.*", if = ["httpx0.25"]},
   {value = "httpx==0.26.*", if = ["httpx0.26"]},
   {value = "httpx==0.27.*", if = ["httpx0.27"]},
-  {value = "httpx==0.27.*", if = ["httpx0.28"]},
+  {value = "httpx==0.28.*", if = ["httpx0.28"]},
 ]
 
 [tool.hatch.envs.test]
