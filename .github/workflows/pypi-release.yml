@@ -16,10 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.8
+      - name: Set up Python 3.9
         uses: actions/setup-python@v5
         with:
-          python-version: "3.8"
+          python-version: "3.9"
 
       - name: Install pypa/build
         run: |
@@ -35,3 +35,9 @@ jobs:
           verify-metadata: false
           verbose: true
           print-hash: true
+
+          # Attentions are disabled temporarily. They do seem to work with the
+          # reusable workflow.
+          # - https://github.com/pypa/gh-action-pypi-publish/issues/166
+          # - https://github.com/pypa/gh-action-pypi-publish/issues/283
+          attestations: false
