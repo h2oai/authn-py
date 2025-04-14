@@ -1,4 +1,5 @@
 import datetime
+import os
 import ssl
 from typing import Dict
 from typing import Optional
@@ -12,6 +13,8 @@ DEFAULT_EXPIRY_THRESHOLD = datetime.timedelta(seconds=5)
 DEFAULT_EXPIRES_IN_FALLBACK = datetime.timedelta(seconds=30)
 
 DEFAULT_HTTP_TIMEOUT = datetime.timedelta(seconds=5)
+
+TOKEN_ENDPOINT_URL_ENV = "H2O_CLOUD_TOKEN_ENDPOINT_URL"
 
 
 class _BaseTokenProvider:
@@ -41,6 +44,8 @@ class _BaseTokenProvider:
                 token_endpoint_url argument.
             token_endpoint_url: URL of the token endpoint that should be used for the
                 access token exchange. Mutually exclusive with the issuer_url argument.
+                If not provided explicitly, the value of the
+                H2O_CLOUD_TOKEN_ENDPOINT_URL environment variable is used if set.
             client_secret: Optional OAuth 2.0 client secret for the confidential
                 clients. Used only when provided.
             scope: Optionally sets the the scope for which the access token should be
@@ -64,7 +69,12 @@ class _BaseTokenProvider:
                 "'token_endpoint_url' and 'issuer_url' arguments are "
                 " mutually exclusive. set only one."
             )
-        if not token_endpoint_url and not issuer_url:
+
+        self._token_endpoint_url = token_endpoint_url
+        if not self._token_endpoint_url:
+            self._token_endpoint_url = os.environ.get(TOKEN_ENDPOINT_URL_ENV)
+
+        if not self._token_endpoint_url and not issuer_url:
             raise ValueError(
                 "setting 'token_endpoint_url' or 'issuer_url' argument is required."
             )
@@ -80,16 +90,10 @@ class _BaseTokenProvider:
         self._client_id = client_id
         self._client_secret = client_secret
         self._scope = scope
-
         self._expiry_threshold = expiry_threshold
         self._expires_in_fallback = expires_in_fallback
         self._minimal_refresh_period = minimal_refresh_period
-
-        self._token_endpoint_url = None
-        if token_endpoint_url:
-            self._token_endpoint_url = token_endpoint_url
-        if issuer_url:
-            self._issuer_url = issuer_url
+        self._issuer_url = issuer_url
 
         self._http_timeout = http_timeout.total_seconds()
         self._verify = http_ssl_context or ssl.create_default_context()

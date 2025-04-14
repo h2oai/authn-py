@@ -14,7 +14,7 @@ TOKEN_ENDPOINT_URL = "http://example.com/token"
 ISSUER_URL = "http://example.com/"
 ISSUER_DISCOVERY_URL = "http://example.com/.well-known/openid-configuration"
 
-PLATFORM_CLIENT_ID = "test-platfrom-client-id"
+PLATFORM_CLIENT_ID = "test-platform-client-id"
 PLATFORM_CLIENT_REFRESH_TOKEN = "platform_client_refresh_token"
 TEST_CLIENT_REFRESH_TOKEN = "test_client_refresh_token"
 
@@ -60,7 +60,7 @@ TEST_DISCOVERY = h2o_discovery.Discovery(
 
 class AbstractTestCase(abc.ABC):
     @abc.abstractmethod
-    def given(self):
+    def given(self, monkeypatch):
         pass
 
     @abc.abstractmethod
@@ -101,7 +101,7 @@ class AsyncTestCase:
 
 
 class ProviderTest(AbstractTestCase):
-    def given(self):
+    def given(self, monkeypatch):
         self.route = respx.post(
             TOKEN_ENDPOINT_URL,
             data={
@@ -132,8 +132,58 @@ class ProviderTest(AbstractTestCase):
         assert self.token.exp.timestamp() == 3600
 
 
+class ProviderTestEnvVariableOverrideUsed(AbstractTestCase):
+    def given(self, monkeypatch):
+        self.route = respx.post(
+            TOKEN_ENDPOINT_URL,
+            data={
+                "grant_type": "refresh_token",
+                "client_id": TEST_CLIENT_ID,
+                "refresh_token": "input_refresh_token",
+                "client_secret": "input_client_secret",
+                "scope": "input scope",
+            },
+        ).respond(json={"access_token": "new_access_token"})
+        monkeypatch.setenv("H2O_CLOUD_TOKEN_ENDPOINT_URL", TOKEN_ENDPOINT_URL)
+        self.provider = self.create_provider(
+            refresh_token="input_refresh_token",
+            client_secret="input_client_secret",
+            scope="input scope",
+            client_id=TEST_CLIENT_ID,
+            issuer_url="//issuer/url",
+        )
+
+    def then(self):
+        assert self.route.called
+
+
+class ProviderTestExplicitArgStillOverridesEnvVariableOverride(AbstractTestCase):
+    def given(self, monkeypatch):
+        self.route = respx.post(
+            TOKEN_ENDPOINT_URL,
+            data={
+                "grant_type": "refresh_token",
+                "client_id": TEST_CLIENT_ID,
+                "refresh_token": "input_refresh_token",
+                "client_secret": "input_client_secret",
+                "scope": "input scope",
+            },
+        ).respond(json={"access_token": "new_access_token"})
+        monkeypatch.setenv("H2O_CLOUD_TOKEN_ENDPOINT_URL", "//override")
+        self.provider = self.create_provider(
+            refresh_token="input_refresh_token",
+            client_secret="input_client_secret",
+            scope="input scope",
+            client_id=TEST_CLIENT_ID,
+            token_endpoint_url=TOKEN_ENDPOINT_URL,
+        )
+
+    def then(self):
+        assert self.route.called
+
+
 class ProviderTestOptionalParamsUsed(AbstractTestCase):
-    def given(self):
+    def given(self, monkeypatch):
         self.route = respx.post(
             TOKEN_ENDPOINT_URL,
             data={
@@ -158,7 +208,7 @@ class ProviderTestOptionalParamsUsed(AbstractTestCase):
 
 
 class ProviderTestIssuerDiscoveryUsed(AbstractTestCase):
-    def given(self):
+    def given(self, monkeypatch):
         self.issuer_discovery_route = respx.get(ISSUER_DISCOVERY_URL).respond(
             json={"token_endpoint": TOKEN_ENDPOINT_URL}
         )
@@ -184,7 +234,7 @@ class ProviderTestIssuerDiscoveryUsed(AbstractTestCase):
 
 
 class ProviderFromDiscoveryWithDefaultClient(AbstractTestCase):
-    def given(self):
+    def given(self, monkeypatch):
         self.issuer_discovery_route = respx.get(ISSUER_DISCOVERY_URL).respond(
             json={"token_endpoint": TOKEN_ENDPOINT_URL}
         )
@@ -206,7 +256,7 @@ class ProviderFromDiscoveryWithDefaultClient(AbstractTestCase):
 
 
 class ProviderFromDiscoveryWithExplicitClient(AbstractTestCase):
-    def given(self):
+    def given(self, monkeypatch):
         self.issuer_discovery_route = respx.get(ISSUER_DISCOVERY_URL).respond(
             json={"token_endpoint": TOKEN_ENDPOINT_URL}
         )
@@ -230,7 +280,7 @@ class ProviderFromDiscoveryWithExplicitClient(AbstractTestCase):
 
 
 class ProviderFromDiscoveryWithScope(AbstractTestCase):
-    def given(self):
+    def given(self, monkeypatch):
         self.issuer_discovery_route = respx.get(ISSUER_DISCOVERY_URL).respond(
             json={"token_endpoint": TOKEN_ENDPOINT_URL}
         )
@@ -277,15 +327,15 @@ def async_case(request):
 
 
 @respx.mock
-def test_sync_token_provider(sync_case):
-    sync_case.given()
+def test_sync_token_provider(sync_case, monkeypatch):
+    sync_case.given(monkeypatch)
     sync_case.when()
     sync_case.then()
 
 
 @respx.mock
 @pytest.mark.asyncio
-async def test_async_token_provider(async_case):
-    async_case.given()
+async def test_async_token_provider(async_case, monkeypatch):
+    async_case.given(monkeypatch)
     await async_case.when()
     async_case.then()

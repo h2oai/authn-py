@@ -24,6 +24,7 @@ Package provides two top level classes `h2o_authn.TokenProvider` and `h2o_authn.
         token_endpoint_url argument.
   - `token_endpoint_url`: URL of the token endpoint that should be used for the
         access token exchange. Mutually exclusive with the issuer_url argument.
+        If not provided explicitly, the value of the `H2O_CLOUD_TOKEN_ENDPOINT_URL` environment variable is used if set.
 - `client_secret`: Optional OAuth 2.0 client secret for the confidential
     clients. Used only when provided.
 - `scope`: Optionally sets the the scope for which the access token should be

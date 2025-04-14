@@ -38,6 +38,20 @@ def test_token_provider_constructor_atleast_one_url_required(constructor):
     assert "argument is required" in str(exc_info.value)
 
 
+@pytest.mark.parametrize(
+    "constructor", [h2o_authn.TokenProvider, h2o_authn.AsyncTokenProvider]
+)
+def test_token_provider_constructor_env_override_possible(constructor, monkeypatch):
+    # Given
+    monkeypatch.setenv("H2O_CLOUD_TOKEN_ENDPOINT_URL", "http://env.example.com/token")
+
+    # When
+    _ = constructor(refresh_token="", client_id="")
+
+    # Then
+    # No exception is raised.
+
+
 @respx.mock
 @pytest.mark.asyncio
 async def test_sync_token_provider_as_async():
