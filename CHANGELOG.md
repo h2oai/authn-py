@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.0](https://github.com/h2oai/authn-py/compare/v3.0.0...v3.1.0) (2025-04-16)
+
+
+### Features
+
+* Allow to specify token endpoint for the provider via the environment variable. ([#107](https://github.com/h2oai/authn-py/issues/107)) ([4b603ff](https://github.com/h2oai/authn-py/commit/4b603ffc62dfced319c6b48c2cd0f9245eafb843))
+* Improve compatibility with Python 3.14 ([#108](https://github.com/h2oai/authn-py/issues/108)) ([02fcf3b](https://github.com/h2oai/authn-py/commit/02fcf3bef91d8b6e3aeff3a9b8236ea594639670))
+
 ## [3.0.0](https://github.com/h2oai/authn-py/compare/v2.1.0...v3.0.0) (2025-01-22)
 
 
