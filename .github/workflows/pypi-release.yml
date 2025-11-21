@@ -12,6 +12,7 @@ jobs:
     name: Build and publish Python distributions packages to PyPI
     runs-on: ubuntu-latest
     needs: [test]
+    environment: pypi
 
     steps:
       - uses: actions/checkout@v6
