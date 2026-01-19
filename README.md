@@ -175,3 +175,7 @@ mlops_client = mlops.Client(
 )
 ...
 ```
+
+## Development
+
+See [RELEASE.md](RELEASE.md) for instructions on how to build and release.
