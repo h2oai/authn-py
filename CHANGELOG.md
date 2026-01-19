@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.1](https://github.com/h2oai/authn-py/compare/v3.1.0...v3.1.1) (2026-01-19)
+
+
+### Documentation
+
+* 📝 describe the release proces ([#118](https://github.com/h2oai/authn-py/issues/118)) ([b7cf4bf](https://github.com/h2oai/authn-py/commit/b7cf4bfcc6cac7e490c330f5f47ec89767686e99))
+* README typos and grammar fixes. ([#111](https://github.com/h2oai/authn-py/issues/111)) ([9cf74f6](https://github.com/h2oai/authn-py/commit/9cf74f67d3c95eacfdaac56c0af703f69175e4f6))
+
 ## [3.1.0](https://github.com/h2oai/authn-py/compare/v3.0.0...v3.1.0) (2025-04-16)
 
 
