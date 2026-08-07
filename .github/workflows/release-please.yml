@@ -9,6 +9,9 @@ on:
 concurrency:
   group: release-please
 
+permissions:
+  contents: read
+
 jobs:
   release-please:
     name: Release Please
