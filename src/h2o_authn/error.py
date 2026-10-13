@@ -1,6 +1,3 @@
-from typing import Optional
-
-
 class BaseError(Exception):
     """Base class for the exceptions raised by the package."""
 
@@ -9,15 +6,15 @@ class TokenEndpointError(BaseError):
     """Thrown when token providers catch well defined error sent back by server."""
 
     error: str
-    error_description: Optional[str]
-    error_uri: Optional[str]
+    error_description: str | None
+    error_uri: str | None
 
     def __init__(
         self,
         *,
         error: str,
-        error_description: Optional[str] = None,
-        error_uri: Optional[str] = None,
+        error_description: str | None = None,
+        error_uri: str | None = None,
     ) -> None:
         self.error = error
         self.error_description = error_description

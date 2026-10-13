@@ -1,6 +1,5 @@
 import datetime
 import ssl
-from typing import Optional
 
 import h2o_discovery
 
@@ -13,13 +12,13 @@ def create(
     discovery: h2o_discovery.Discovery,
     client: str = DEFAULT_CLIENT,
     *,
-    scope: Optional[str] = None,
-    client_secret: Optional[str] = None,
+    scope: str | None = None,
+    client_secret: str | None = None,
     expiry_threshold: datetime.timedelta = provider.DEFAULT_EXPIRY_THRESHOLD,
     expires_in_fallback: datetime.timedelta = provider.DEFAULT_EXPIRES_IN_FALLBACK,
     http_timeout: datetime.timedelta = provider.DEFAULT_HTTP_TIMEOUT,
-    minimal_refresh_period: Optional[datetime.timedelta] = None,
-    http_ssl_context: Optional[ssl.SSLContext] = None,
+    minimal_refresh_period: datetime.timedelta | None = None,
+    http_ssl_context: ssl.SSLContext | None = None,
 ):
     """Returns a new TokenProvider instance configured from the given Discovery object.
 
@@ -66,13 +65,13 @@ def create_async(
     discovery: h2o_discovery.Discovery,
     client: str = DEFAULT_CLIENT,
     *,
-    scope: Optional[str] = None,
-    client_secret: Optional[str] = None,
+    scope: str | None = None,
+    client_secret: str | None = None,
     expiry_threshold: datetime.timedelta = provider.DEFAULT_EXPIRY_THRESHOLD,
     expires_in_fallback: datetime.timedelta = provider.DEFAULT_EXPIRES_IN_FALLBACK,
     http_timeout: datetime.timedelta = provider.DEFAULT_HTTP_TIMEOUT,
-    minimal_refresh_period: Optional[datetime.timedelta] = None,
-    http_ssl_context: Optional[ssl.SSLContext] = None,
+    minimal_refresh_period: datetime.timedelta | None = None,
+    http_ssl_context: ssl.SSLContext | None = None,
 ):
     """Returns a new AsyncTokenProvider instance configured from the given Discovery
     object.
