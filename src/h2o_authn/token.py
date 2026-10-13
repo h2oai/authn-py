@@ -1,6 +1,5 @@
 import collections
 import datetime
-from typing import Optional
 
 DEFAULT_EXPIRY_THRESHOLD = datetime.timedelta(seconds=5)
 DEFAULT_EXPIRES_IN_FALLBACK = datetime.timedelta(seconds=30)
@@ -8,19 +7,19 @@ DEFAULT_EXPIRES_IN_FALLBACK = datetime.timedelta(seconds=30)
 
 class Token(collections.UserString):
     def __init__(
-        self, value: str, exp: Optional[datetime.datetime], scope: Optional[str]
+        self, value: str, exp: datetime.datetime | None, scope: str | None
     ) -> None:
         super().__init__(value)
         self._exp = exp
         self._scope = scope
 
     @property
-    def exp(self) -> Optional[datetime.datetime]:
+    def exp(self) -> datetime.datetime | None:
         """Indicates the moment when the token expires."""
         return self._exp
 
     @property
-    def scope(self) -> Optional[str]:
+    def scope(self) -> str | None:
         """Scope of the token if known."""
         return self._scope
 
@@ -32,7 +31,7 @@ class Container:
         *,
         expiry_threshold: datetime.timedelta = DEFAULT_EXPIRY_THRESHOLD,
         expires_in_fallback: datetime.timedelta = DEFAULT_EXPIRES_IN_FALLBACK,
-        minimal_expires_in: Optional[datetime.timedelta] = None,
+        minimal_expires_in: datetime.timedelta | None = None,
     ) -> None:
         self._original_refresh_token = refresh_token
         self._refresh_token = refresh_token
@@ -40,8 +39,8 @@ class Container:
         self._expires_in_fallback = expires_in_fallback
         self._minimal_expires_in = minimal_expires_in
 
-        self._access_token: Optional[Token] = None
-        self._access_token_exp: Optional[datetime.datetime] = None
+        self._access_token: Token | None = None
+        self._access_token_exp: datetime.datetime | None = None
 
     @property
     def refresh_token(self) -> str:
@@ -67,23 +66,23 @@ class Container:
         if self._access_token is None or self._access_token_exp is None:
             return True
 
-        now = datetime.datetime.now(datetime.timezone.utc)
+        now = datetime.datetime.now(datetime.UTC)
         return self._access_token_exp <= (now + self._expiry_threshold)
 
     def update_token(
         self,
         access_token: str,
-        expires_in: Optional[int] = None,
-        refresh_token: Optional[str] = None,
-        scope: Optional[str] = None,
+        expires_in: int | None = None,
+        refresh_token: str | None = None,
+        scope: str | None = None,
     ):
         """Updates the token managed by the container from the fields expected in the
         token endpoint response.
         """
         exp_delta = self._expires_in_fallback
-        now = datetime.datetime.now(datetime.timezone.utc)
+        now = datetime.datetime.now(datetime.UTC)
 
-        token_exp: Optional[datetime.datetime] = None
+        token_exp: datetime.datetime | None = None
         if expires_in:
             exp_delta = datetime.timedelta(seconds=expires_in)
             token_exp = now + exp_delta
