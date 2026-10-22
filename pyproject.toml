@@ -73,8 +73,8 @@ template = "test"
 
 [tool.hatch.envs.lint]
 dependencies = [
-  "mypy~=1.1",
-  "ruff==0.1.11",
+  "mypy~=2.4",
+  "ruff==0.17",
 ]
 features = ["discovery"]
 
@@ -99,16 +99,17 @@ dependencies = [
 generate = "pydoc-markdown"
 
 [tool.ruff]
-extend-select = ["I", "B", "A", "ERA"]
 line-length = 88 # Same as black.
 src = ["src", "test"]
-target-version = "py37"
 
 [tool.ruff.format]
 docstring-code-format = true
 skip-magic-trailing-comma = true
 
-[tool.ruff.isort]
+[tool.ruff.lint]
+extend-select = ["I", "B", "A", "ERA"]
+
+[tool.ruff.lint.isort]
 case-sensitive = false
 force-single-line = true
 force-sort-within-sections = true

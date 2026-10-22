@@ -84,8 +84,7 @@ import h2o_mlops_client as mlops
 
 provider = h2o_authn.TokenProvider(...)
 mlops_client = mlops.Client(
-    gateway_url="https://mlops-api.cloud.h2o.ai",
-    token_provider=provider,
+    gateway_url="https://mlops-api.cloud.h2o.ai", token_provider=provider
 )
 ...
 ```
@@ -97,6 +96,7 @@ import h2o_authn
 import h2o_drive
 from h2o_wave import Q, app, ui
 from h2o_wave import main
+
 
 @app("/")
 async def serve(q: Q):
@@ -120,9 +120,7 @@ import h2osteam.clients
 
 provider = h2o_authn.TokenProvider(...)
 
-h2osteam.login(
-    url="https://steam.cloud-dev.h2o.ai", access_token=provider()
-)
+h2osteam.login(url="https://steam.cloud-dev.h2o.ai", access_token=provider())
 client = h2osteam.clients.DriverlessClient()
 
 ...
@@ -159,7 +157,6 @@ accepts following arguments:
 #### Example: Use of the H2O Cloud Discovery with H2O.ai MLOps Python CLient
 
 ```python
-
 import h2o_authn.discovery
 import h2o_discovery
 import h2o_mlops_client as mlops
@@ -170,8 +167,7 @@ discovery = h2o_discovery.discover()
 provider = h2o_authn.discovery.create(discovery)
 
 mlops_client = mlops.Client(
-    gateway_url=discovery.services["mlops-api"].uri,
-    token_provider=provider,
+    gateway_url=discovery.services["mlops-api"].uri, token_provider=provider
 )
 ...
 ```

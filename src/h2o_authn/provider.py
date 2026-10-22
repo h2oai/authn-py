@@ -1,8 +1,6 @@
 import datetime
 import os
 import ssl
-from typing import Dict
-from typing import Optional
 
 import httpx
 
@@ -23,15 +21,15 @@ class _BaseTokenProvider:
         *,
         refresh_token: str,
         client_id: str,
-        issuer_url: Optional[str] = None,
-        token_endpoint_url: Optional[str] = None,
-        client_secret: Optional[str] = None,
-        scope: Optional[str] = None,
+        issuer_url: str | None = None,
+        token_endpoint_url: str | None = None,
+        client_secret: str | None = None,
+        scope: str | None = None,
         expiry_threshold: datetime.timedelta = DEFAULT_EXPIRY_THRESHOLD,
         expires_in_fallback: datetime.timedelta = DEFAULT_EXPIRES_IN_FALLBACK,
         http_timeout: datetime.timedelta = DEFAULT_HTTP_TIMEOUT,
-        minimal_refresh_period: Optional[datetime.timedelta] = None,
-        http_ssl_context: Optional[ssl.SSLContext] = None,
+        minimal_refresh_period: datetime.timedelta | None = None,
+        http_ssl_context: ssl.SSLContext | None = None,
     ) -> None:
         """Returns a new instance of the token provider.
 
@@ -98,7 +96,7 @@ class _BaseTokenProvider:
         self._http_timeout = http_timeout.total_seconds()
         self._verify = http_ssl_context or ssl.create_default_context()
 
-    def _create_refresh_request_data(self) -> Dict[str, str]:
+    def _create_refresh_request_data(self) -> dict[str, str]:
         data = {
             "grant_type": "refresh_token",
             "client_id": self._client_id,
@@ -147,7 +145,7 @@ class _BaseTokenProvider:
         resp.raise_for_status()
         self._token_endpoint_url = resp.json()["token_endpoint"]
 
-    def _clone(self, constructor, scope: Optional[str] = None):
+    def _clone(self, constructor, scope: str | None = None):
         issuer_url = None
         if not self._token_endpoint_url:
             issuer_url = self._issuer_url
