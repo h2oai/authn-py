@@ -44,7 +44,9 @@ def repr_test_cases():
     )
 
 
-@pytest.mark.parametrize("error, error_description, error_uri, want", repr_test_cases())
+@pytest.mark.parametrize(
+    "error, error_description, error_uri, want", list(repr_test_cases())
+)
 def test_repr(error, error_description, error_uri, want):
     # Given
     error = h2o_authn.error.TokenEndpointError(
@@ -83,7 +85,9 @@ def str_test_cases():
     yield pytest.param("TEST_ERROR", None, None, "TEST_ERROR", id="error only")
 
 
-@pytest.mark.parametrize("error, error_description, error_uri, want", str_test_cases())
+@pytest.mark.parametrize(
+    "error, error_description, error_uri, want", list(str_test_cases())
+)
 def test_str(error, error_description, error_uri, want):
     # Given
     error = h2o_authn.error.TokenEndpointError(
