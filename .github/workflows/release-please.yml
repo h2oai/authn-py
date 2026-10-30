@@ -9,8 +9,7 @@ on:
 concurrency:
   group: release-please
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   release-please:
@@ -20,8 +19,8 @@ jobs:
       releases_created: ${{ steps.release.outputs.releases_created }}
 
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Pushes to the repo and creates release.
+      pull-requests: write # Opens PR.
 
     steps:
       - uses: googleapis/release-please-action@v5
@@ -35,4 +34,5 @@ jobs:
     if: needs.release-please.outputs.releases_created == 'true'
 
     permissions:
-      id-token: write
+      contents: read
+      id-token: write # Publishes to PyPI.
