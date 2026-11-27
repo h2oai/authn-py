@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/h2oai/authn-py/compare/v4.0.0...v4.0.1) (2026-11-10)
+
+
+### Bug Fixes
+
+* **deps:** :arrow_up: update h2o-cloud-discovery requirement ([#133](https://github.com/h2oai/authn-py/issues/133)) ([a56238a](https://github.com/h2oai/authn-py/commit/a56238a805f751797cc850de95e58efb2cef1278))
+
 ## [4.0.0](https://github.com/h2oai/authn-py/compare/v3.1.0...v4.0.0) (2026-11-04)
 
 
